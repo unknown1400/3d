@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routine Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .schedule-section, .planning-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-block {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .time-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .time-slot {
+            font-weight: bold;
+            color: #667eea;
+            min-width: 80px;
+        }
+
+        .activity-info {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .activity-duration {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .activity-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-inputs input {
+            width: 80px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⏰ Routine Planner</h1>
+            <p>Plan your day and optimize your time</p>
+        </div>
+
+        <div class="main-content">
+            <div class="schedule-section">
+                <div class="section-title">📅 Daily Schedule</div>
+                <div id="scheduleContainer">
+                    <div class="empty-state">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">⏰</div>
+                        <h3>No activities planned!</h3>
+                        <p>Start by adding activities to your daily routine.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planning-section">
+                <div class="section-title">➕ Add Activity</div>
+                <form id="addActivityForm">
+                    <div class="form-group">
+                        <label class="form-label">Activity Name</label>
+                        <input type="text" class="form-input" id="activityName" placeholder="e.g., Morning Exercise" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Start Time</label>
+                        <input type="time" class="form-input" id="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Duration</label>
+                        <div class="time-inputs">
+                            <input type="number" class="form-input" id="durationHours" placeholder="0" min="0" max="24">
+                            <span>hours</span>
+                            <input type="number" class="form-input" id="durationMinutes" placeholder="30" min="0" max="59">
+                            <span>minutes</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" id="activityCategory" required>
+                            <option value="">Select category</option>
+                            <option value="work">Work</option>
+                            <option value="exercise">Exercise</option>
+                            <option value="learning">Learning</option>
+                            <option value="rest">Rest</option>
+                            <option value="social">Social</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-select" id="activityPriority" required>
+                            <option value="">Select priority</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                        Add Activity
+                    </button>
+                </form>
+
+                <div style="margin-top: 30px;">
+                    <div class="section-title">📊 Today's Stats</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalActivities">0</div>
+                            <div class="stat-label">Activities</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalHours">0h</div>
+                            <div class="stat-label">Planned</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="completedActivities">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="efficiency">0%</div>
+                            <div class="stat-label">Efficiency</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let activities = JSON.parse(localStorage.getItem('activities')) || [];
+
+        function init() {
+            updateStats();
+            renderSchedule();
+        }
+
+        function updateStats() {
+            const totalActivities = activities.length;
+            const completedActivities = activities.filter(activity => activity.completed).length;
+            const totalHours = activities.reduce((sum, activity) => sum + (activity.duration || 0), 0) / 60;
+            const efficiency = totalActivities > 0 ? Math.round((completedActivities / totalActivities) * 100) : 0;
+
+            document.getElementById('totalActivities').textContent = totalActivities;
+            document.getElementById('totalHours').textContent = Math.round(totalHours) + 'h';
+            document.getElementById('completedActivities').textContent = completedActivities;
+            document.getElementById('efficiency').textContent = efficiency + '%';
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('scheduleContainer');
+            
+            if (activities.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">⏰</div>
+                        <h3>No activities planned!</h3>
+                        <p>Start by adding activities to your daily routine.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort activities by start time
+            const sortedActivities = activities.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+            container.innerHTML = sortedActivities.map(activity => `
+                <div class="time-block ${activity.completed ? 'completed' : ''}">
+                    <div class="time-slot">${activity.startTime}</div>
+                    <div class="activity-info">
+                        <div class="activity-title">${activity.name}</div>
+                        <div class="activity-duration">
+                            ${activity.duration} minutes • ${activity.category} • ${activity.priority} priority
+                        </div>
+                    </div>
+                    <div class="activity-actions">
+                        <button class="btn btn-success" onclick="completeActivity(${activity.id})">
+                            ${activity.completed ? '✅' : '✓'}
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteActivity(${activity.id})">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function completeActivity(activityId) {
+            const activity = activities.find(a => a.id === activityId);
+            if (activity) {
+                activity.completed = !activity.completed;
+                localStorage.setItem('activities', JSON.stringify(activities));
+                updateStats();
+                renderSchedule();
+            }
+        }
+
+        function deleteActivity(activityId) {
+            if (confirm('Are you sure you want to delete this activity?')) {
+                activities = activities.filter(a => a.id !== activityId);
+                localStorage.setItem('activities', JSON.stringify(activities));
+                updateStats();
+                renderSchedule();
+            }
+        }
+
+        document.getElementById('addActivityForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const hours = parseInt(document.getElementById('durationHours').value) || 0;
+            const minutes = parseInt(document.getElementById('durationMinutes').value) || 0;
+            const duration = hours * 60 + minutes;
+
+            const activity = {
+                id: Date.now(),
+                name: document.getElementById('activityName').value,
+                startTime: document.getElementById('startTime').value,
+                duration: duration,
+                category: document.getElementById('activityCategory').value,
+                priority: document.getElementById('activityPriority').value,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            activities.push(activity);
+            localStorage.setItem('activities', JSON.stringify(activities));
+            
+            document.getElementById('addActivityForm').reset();
+            updateStats();
+            renderSchedule();
+        });
+
+        init();
+    </script>
+</body>
+</html>

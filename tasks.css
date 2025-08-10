@@ -1,0 +1,137 @@
+        :root {
+            --bg-color: #1a1c2c;
+            --text-color: #f4f4f4;
+            --accent-blue: #41a6f6;
+            --accent-pink: #ff78f8;
+            --accent-green: #5dff5d;
+            --card-bg: #2d3047;
+            --shadow: 0 8px 0 rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Ubuntu Mono', monospace;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(65,166,246,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255,120,248,0.1) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent-blue);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0 var(--accent-pink);
+        }
+
+
+        .input-panel {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--accent-blue);
+
+
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        #todo-input, #time-input {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.9);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        #todo-input {
+            flex: 2;
+        }
+
+        #time-input {
+            flex: 1;
+        }
+
+        #add-btn {
+            background: var(--accent-pink);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            width: 100%;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--accent-blue);
+            height: 250px;
+        }
+
+        .task-list {
+            margin-top: 1rem;
+        }
+
+        .task {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent-blue);
+        }
+
+        .task-checkbox {
+            margin-right: 10px;
+        }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .task-time {
+            color: var(--accent-pink);
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+
+        .task-delete {
+            background: none;
+            border: none;
+            color: var(--accent-pink);
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+        }
