@@ -321,10 +321,10 @@ function showNavigationDialog(section) {
 // Function to open a section
 function openSection(section) {
   const sectionUrls = {
-    'habits': '../Habit.html',
-    'tasks': '../Tasks.html',
-    'progress': '../Progress.html',
-    'routine': '../Routine.html'
+    'habits': 'Habits.html',
+    'tasks': 'Tasks.html',
+    'progress': 'Progress.html',
+    'routine': 'Routine.html'
   };
   
   if (sectionUrls[section]) {
